@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FH Basket Shop</title>
+  <!-- Tipografía moderna Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Estilos base */
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Poppins', 'Segoe UI', sans-serif; 
+    }
+    html { scroll-behavior: smooth; }
+    body { background-color: #f8f9fa; color: #111; overflow-x: hidden; }
+
+    /* Header superior */
+    header {
+      background-color: #ffffff;
+      border-bottom: 1px solid #e5e5e5;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 15px;
+      gap: 12px;
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: #000;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .logo-icon {
+      width: 28px;
+      height: 28px;
+      background: #000;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
+
+    .search-box {
+      flex: 1;
+      max-width: 600px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 16px;
+      border-radius: 25px;
+      border: 1px solid #e0e0e0;
+      background-color: #f2f2f2;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      background-color: #fff;
+      border-color: #000;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
+    }
+
+    /* Menú de navegación */
+    nav {
+      border-top: 1px solid #f0f0f0;
+      background-color: #ffffff;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-links {
+      display: inline-flex;
+      list-style: none;
+      gap: 20px;
+      padding: 10px 15px;
+      min-width: 100%;
+      justify-content: flex-start;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #222;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #ff5500;
+    }
+
+    /* Contenedor principal */
+    main {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      border-left: 4px solid #ff5500;
+      padding-left: 8px;
+    }
+
+    .product-section {
+      margin-bottom: 35px;
+    }
+
+    /* Grilla Adaptativa */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    /* Tarjetas de Producto */
+    .card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 12px;
+      border: 1px solid #e8e8e8;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: #e6f4ea;
+      color: #137333;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 6px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+      align-self: flex-start;
+    }
+
+    .card img {
+      width: 100%;
+      height: 140px;
+      object-fit: contain;
+      background-color: transparent;
+      border: none;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      mix-blend-mode: multiply;
+    }
+
+    .card h3 {
+      font-size: 0.85rem;
+      color: #333;
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .size-select {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid #d0d0d0;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      font-size: 0.8rem;
+      outline: none;
+      background-color: #fff;
+    }
+
+    .card .price {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #000;
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      display: block;
+      background-color: #000000;
+      color: #ffffff;
+      text-align: center;
+      text-decoration: none;
+      padding: 8px 5px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn:hover {
+      background-color: #ff5500;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Sección Nosotros */
+    .about-section {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 20px 15px;
+      border: 1px solid #e8e8e8;
+      margin-top: 35px;
+      margin-bottom: 30px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .about-card {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 6px;
+      border-top: 3px solid #ff5500;
+    }
+
+    .about-card h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      color: #000;
+    }
+
+    .about-card p, .about-card ul {
+      font-size: 0.85rem;
+      color: #444;
+      line-height: 1.4;
+    }
+
+    .about-card ul {
+      list-style-position: inside;
+    }
+
+    /* Sección Redes Sociales */
+    .social-section {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 25px 15px;
+      border: 1px solid #e8e8e8;
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .social-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      color: #ffffff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    }
+
+    .social-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #111111;
+      color: #ffffff;
+      padding: 30px 15px 15px;
+      margin-top: 40px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #333;
+    }
+
+    .footer-col h4 {
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #ff5500;
+      font-weight: 800;
+    }
+
+    .footer-col p, .footer-col a {
+      color: #bbb;
+      font-size: 0.85rem;
+      text-decoration: none;
+      line-height: 1.6;
+      display: block;
+    }
+
+    .footer-col a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 15px auto 0;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    /* Media Queries para Pantallas Grandes */
+    @media (min-width: 600px) {
+      .top-bar { padding: 15px 20px; gap: 20px; }
+      .logo { font-size: 1.4rem; }
+      .logo-icon { width: 30px; height: 30px; font-size: 0.9rem; }
+      .nav-links { justify-content: center; overflow: visible; padding: 12px 20px; }
+      .nav-links a { font-size: 0.95rem; }
+      main { margin: 30px auto; padding: 0 20px; }
+      .section-title { font-size: 1.5rem; margin-bottom: 20px; padding-left: 10px; }
+      .grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+      .card { padding: 15px; }
+      .card img { height: 200px; margin-bottom: 12px; }
+      .card h3 { font-size: 0.95rem; margin-bottom: 8px; }
+      .size-select { padding: 8px 10px; font-size: 0.85rem; margin-bottom: 12px; }
+      .card .price { font-size: 1.2rem; margin-bottom: 12px; }
+      .btn { padding: 10px; font-size: 0.9rem; }
+      .about-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+      .footer-container { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <header>
+    <div class="top-bar">
+      <a href="#" class="logo">
+        <span class="logo-icon">🏀</span> FH Basketball
+      </a>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="¿Qué estás buscando?">
+      </div>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#bandas-mangas">Bandas y Mangas Wilson</a></li>
+        <li><a href="#protectores">Protectores Bucales</a></li>
+        <li><a href="#tobilleras">Tobilleras</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#redes">Redes Sociales</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Apartado 1: Bandas de Cabeza y Mangas Wilson -->
+    <section id="bandas-mangas" class="product-section">
+      <h2 class="section-title">Banda de Cabeza / Mangas Wilson para brazo</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="badge">En Stock</span>
+          <img src="imagenes/banda%20roja.png" alt="Banda para la cabeza roja">
+          <h3>Banda para la Cabeza Roja</h3>
+          <div class="price">$350.00</div>
+          <a href="https://wa.me/18095070455?text=Hola,%20quiero%20comprar%20este%20producto:%20Banda%20para%20la%20cabeza%20roja" target="_blank" class="btn">Pedir por WhatsApp</a>
+        </div>
+
+        <div class="card">
+          <span class="badge">En Stock</span>
+          <img src="imagenes/manga%20wilson.png" alt="Manga para Brazo Wilson Negra">
+          <h3>Manga para Brazo Wilson Negra</h3>
+          <select class="size-select">
+            <option value="">Selecciona Talla</option>
+            <option value="S/M">Talla S/M</option>
+            <option value="L/XL">Talla L/XL</option>
+          </select>
+          <div class="price">$600.00</div>
+          <a href="https://wa.me/18095070455?text=Hola,%20quiero%20comprar%20este%20producto:%20Manga%20para%20Brazo%20Wilson%20Negra" target="_blank" class="btn">Pedir por WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Apartado 2: Protectores Bucales -->
+    <section id="protectores" class="product-section">
+      <h2 class="section-title">Protectores Bucales</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="badge">En Stock</span>
+          <img src="imagenes/proctector%20de%20boca%20nergo%20.jpeg" alt="Protector Bucal Negro">
+          <h3>Protector Bucal Negro</h3>
+          <div class="price">$350.00</div>
+          <a href="https://wa.me/18095070455?text=Hola,%20quiero%20comprar%20este%20producto:%20Protector%20Bucal%20Negro" target="_blank" class="btn">Pedir por WhatsApp</a>
+        </div>
+
+        <div class="card">
+          <span class="badge">En Stock</span>
+          <img src="imagenes/proctector%20de%20boca%20trasparente%20.jpeg" alt="Protector Bucal Transparente">
+          <h3>Protector Bucal Transparente</h3>
+          <div class="price">$350.00</div>
+          <a href="https://wa.me/18095070455?text=Hola,%20quiero%20comprar%20este%20producto:%20Protector%20Bucal%20Transparente" target="_blank" class="btn">Pedir por WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Apartado 3: Tobilleras -->
+    <section id="tobilleras" class="product-section">
+      <h2 class="section-title">Tobilleras deportivas</h2>
+      <div class="grid">
+        <div class="card">
+          <span class="badge">En Stock</span>
+          <img src="imagenes/tobillera%203.png" alt="Tobillera Deportiva Verde">
+          <h3>Tobillera Deportiva verde</h3>
+          <select class="size-select">
+            <option value="">Selecciona Talla</option>
+            <option value="M">Talla M</option>
+            <option value="L">Talla L</option>
+            <option value="XL">Talla XL</option>
+          </select>
+          <div class="price">$250.00</div>
+          <a href="https://wa.me/18095070455?text=Hola,%20quiero%20comprar%20este%20producto:%20Tobillera%20Deportiva%20Verde" target="_blank" class="btn">Pedir por WhatsApp</a>
+        </div>
+
+        <div class="card">
+          <span class="badge">En Stock</span>
+          <img src="imagenes/tobillera%204.png" alt="Tobillera Deportiva Ajustable">
+          <h3>Tobillera Deportiva Ajustable</h3>
+          <select class="size-select">
+            <option value="">Selecciona Talla</option>
+            <option value="M">Talla M</option>
+            <option value="L">Talla L</option>
+            <option value="XL">Talla XL</option>
+          </select>
+          <div class="price">$350.00</div>
+          <a href="https://wa.me/18095070455?text=Hola,%20quiero%20comprar%20este%20producto:%20Tobillera%20Deportiva%20Ajustable" target="_blank" class="btn">Pedir por WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección Sobre FH Basketball -->
+    <section id="nosotros" class="about-section">
+      <h2 class="section-title">Sobre FH Basketball</h2>
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>Misión</h3>
+          <p>Equipar a jugadores de baloncesto con accesorios de alta calidad y protección deportiva, garantizando el máximo rendimiento y seguridad en la cancha.</p>
+        </div>
+        <div class="about-card">
+          <h3>Visión</h3>
+          <p>Ser la tienda de referencia en accesorios y equipamiento técnico para baloncesto, destacándonos por la calidad de nuestros productos y atención rápida.</p>
+        </div>
+        <div class="about-card">
+          <h3>Valores</h3>
+          <ul>
+            <li><strong>Calidad:</strong> Equipamiento resistente y duradero.</li>
+            <li><strong>Pasión:</strong> Amamos el baloncesto tanto como tú.</li>
+            <li><strong>Compromiso:</strong> Atención directa y rápida en cada pedido.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección Redes Sociales -->
+    <section id="redes" class="social-section">
+      <h2 class="section-title" style="border: none; padding-left: 0;">Síguenos en Redes Sociales</h2>
+      <p style="font-size: 0.9rem; color: #555; margin-bottom: 10px;">Entérate de nuevos lanzamientos, ofertas y novedades de la tienda.</p>
+      <div class="social-container">
+        <a href="https://www.instagram.com/fh_basketball?igsi=dTJtaGZkN3JqNjA3" target="_blank" rel="noopener noreferrer" class="social-btn">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+          Síguenos en Instagram
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-col">
+        <h4>FH Basketball</h4>
+        <p>Tu tienda especializada en protección y accesorios deportivos de alto rendimiento para baloncesto.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navegación</h4>
+        <a href="#bandas-mangas">Bandas y Mangas Wilson</a>
+        <a href="#protectores">Protectores Bucales</a>
+        <a href="#tobilleras">Tobilleras</a>
+        <a href="#nosotros">Sobre Nosotros</a>
+        <a href="#redes">Redes Sociales</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto y Redes</h4>
+        <p>📍 Envíos en estaciones del metro</p>
+        <p>📱 Pedidos vía WhatsApp: 809-507-0455</p>
+        <p>✉️ ferrereasfrederick@gmail.com</p>
+        <a href="https://www.instagram.com/fh_basketball?igsi=dTJtaGZkN3JqNjA3" target="_blank" rel="noopener noreferrer" style="margin-top: 8px; color: #ff5500; font-weight: bold;">📷 Instagram: @fh_basketball</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 FH Basketball Shop. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    const searchInput = document.getElementById('searchInput');
+
+    // Filtro de búsqueda en tiempo real
+    searchInput.addEventListener('input', function() {
+      const filter = searchInput.value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.card');
+
+      cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        
+        if (title.includes(filter)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      const sections = document.querySelectorAll('.product-section');
+      sections.forEach(section => {
+        const visibleCards = section.querySelectorAll('.card[style*="display: flex"], .card:not([style*="display: none"])');
+        
+        if (visibleCards.length === 0 && filter !== '') {
+          section.style.display = 'none';
+        } else {
+          section.style.display = 'block';
+        }
+      });
+    });
+
+    // Actualización dinámica del mensaje de WhatsApp al seleccionar talla
+    document.querySelectorAll('.card').forEach(card => {
+      const select = card.querySelector('.size-select');
+      const btn = card.querySelector('.btn');
+      
+      if (select && btn) {
+        const originalHref = btn.getAttribute('href');
+        select.addEventListener('change', () => {
+          const selectedSize = select.value;
+          if (selectedSize) {
+            btn.setAttribute('href', `${originalHref}%20-%20Talla:%20${selectedSize}`);
+          } else {
+            btn.setAttribute('href', originalHref);
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
