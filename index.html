@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FH Basket Shop</title>
+  <title>FH Basket Shop | Accesorios y Protección Deportiva</title>
+  
+  <!-- Open Graph / Meta etiquetas para compartir en Redes y WhatsApp -->
+  <meta property="og:title" content="FH Basketball Shop">
+  <meta property="og:description" content="Accesorios y protección deportiva de alto rendimiento para baloncesto. Pedidos directos por WhatsApp.">
+  <meta property="og:type" content="website">
+
   <!-- Tipografía moderna Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -232,6 +238,28 @@
       transform: scale(0.98);
     }
 
+    /* Mensaje de no resultados */
+    #noResults {
+      display: none;
+      text-align: center;
+      padding: 40px 10px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      border: 1px solid #e8e8e8;
+      margin-bottom: 30px;
+    }
+
+    #noResults h3 {
+      font-size: 1.1rem;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    #noResults p {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
     /* Sección Nosotros */
     .about-section {
       background-color: #ffffff;
@@ -410,6 +438,12 @@
   </header>
 
   <main>
+    <!-- Mensaje cuando no hay resultados de búsqueda -->
+    <div id="noResults">
+      <h3>No se encontraron productos</h3>
+      <p>Intenta buscando con otra palabra clave como "tobillera", "manga" o "protector".</p>
+    </div>
+
     <!-- Apartado 1: Bandas de Cabeza y Mangas Wilson -->
     <section id="bandas-mangas" class="product-section">
       <h2 class="section-title">Banda de Cabeza / Mangas Wilson para brazo</h2>
@@ -562,17 +596,20 @@
   <!-- Scripts -->
   <script>
     const searchInput = document.getElementById('searchInput');
+    const noResultsDiv = document.getElementById('noResults');
 
     // Filtro de búsqueda en tiempo real
     searchInput.addEventListener('input', function() {
       const filter = searchInput.value.toLowerCase().trim();
       const cards = document.querySelectorAll('.card');
+      let totalVisible = 0;
 
       cards.forEach(card => {
         const title = card.querySelector('h3').textContent.toLowerCase();
         
         if (title.includes(filter)) {
           card.style.display = 'flex';
+          totalVisible++;
         } else {
           card.style.display = 'none';
         }
@@ -588,23 +625,42 @@
           section.style.display = 'block';
         }
       });
+
+      // Muestra o oculta el mensaje de "Sin resultados"
+      if (totalVisible === 0 && filter !== '') {
+        noResultsDiv.style.display = 'block';
+      } else {
+        noResultsDiv.style.display = 'none';
+      }
     });
 
-    // Actualización dinámica del mensaje de WhatsApp al seleccionar talla
+    // Control de selección de talla y enlace de WhatsApp
     document.querySelectorAll('.card').forEach(card => {
       const select = card.querySelector('.size-select');
       const btn = card.querySelector('.btn');
       
-      if (select && btn) {
+      if (btn) {
         const originalHref = btn.getAttribute('href');
-        select.addEventListener('change', () => {
-          const selectedSize = select.value;
-          if (selectedSize) {
-            btn.setAttribute('href', `${originalHref}%20-%20Talla:%20${selectedSize}`);
-          } else {
-            btn.setAttribute('href', originalHref);
-          }
-        });
+
+        if (select) {
+          select.addEventListener('change', () => {
+            const selectedSize = select.value;
+            if (selectedSize) {
+              btn.setAttribute('href', `${originalHref}%20-%20Talla:%20${encodeURIComponent(selectedSize)}`);
+            } else {
+              btn.setAttribute('href', originalHref);
+            }
+          });
+
+          // Advertencia si intenta pedir sin elegir talla
+          btn.addEventListener('click', (e) => {
+            if (!select.value) {
+              e.preventDefault();
+              alert('Por favor, selecciona una talla antes de realizar tu pedido.');
+              select.focus();
+            }
+          });
+        }
       }
     });
   </script>
